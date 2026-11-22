@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>UGCHub - Discover & hire UGC creators</title>
+<meta name="description" content="The home for UGC creators and the brands that hire them.">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" id="mf"><link rel="icon" id="ic"><link rel="apple-touch-icon" id="ai">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="UGCHub">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{--bg:#fff;--t:#000;--m:#737373;--b:#dbdbdb;--in:#efefef;--bl:#0095f6;--rd:#ff3040}
+@media(prefers-color-scheme:dark){:root{--bg:#000;--t:#f5f5f5;--m:#a8a8a8;--b:#262626;--in:#262626}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}html{color-scheme:light dark}
+body{background:var(--bg);color:var(--t);font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}input,select,textarea{background:var(--in);border:0;border-radius:8px;padding:10px 12px;width:100%;outline:0}
+textarea{resize:none}a{cursor:pointer}.mut{color:var(--m)}small{font-size:12px}h2.pt{font-size:20px;padding:6px 14px 10px}
+#top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--b);padding-top:env(safe-area-inset-top)}
+.tb0{max-width:935px;margin:auto;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 14px}
+.logo{font:italic 700 26px Georgia,"Times New Roman",serif;cursor:pointer;letter-spacing:-.5px}.tt{font-size:16px;margin-left:4px}.tl{display:flex;align-items:center}
+.ib{position:relative;background:0;border:0;padding:8px;cursor:pointer;color:var(--t);display:inline-flex}.ib.lk2{color:var(--rd)}
+.bdg{position:absolute;top:2px;right:0;background:var(--rd);color:#fff;border-radius:9px;font-size:10px;min-width:17px;height:17px;line-height:17px;text-align:center;padding:0 4px;font-weight:700}
+.lk{background:0;border:0;color:var(--bl);font-weight:600;padding:8px;cursor:pointer}
+#nv{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--bg);border-top:1px solid var(--b);display:flex;justify-content:space-around;padding:6px 0 calc(6px + env(safe-area-inset-bottom))}
+#nv button{background:0;border:0;padding:6px 14px;cursor:pointer;color:var(--t);opacity:.65;display:flex}#nv button.on{opacity:1}#nv .av{border:2px solid transparent}#nv .on .av{border-color:var(--t)}
+body.nonav #nv{display:none}#app{padding-bottom:76px;min-height:70vh}
+@media(min-width:800px){#nv{top:54px;right:auto;width:72px;flex-direction:column;justify-content:flex-start;align-items:center;gap:14px;border-top:0;border-right:1px solid var(--b);padding:22px 0}body.nonav #nv{display:flex}#app{padding-left:72px;padding-bottom:30px}}
+.wrap{max-width:600px;margin:0 auto;padding:6px 0}.wrap.hm{max-width:470px}.pad{padding:16px}.pad2{padding:14px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid var(--b)}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex:none;object-fit:cover}
+.ring{padding:2px;border-radius:50%;background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7);display:inline-flex;flex:none}.ring>.av{border:2px solid var(--bg)}
+.st{display:flex;gap:14px;overflow-x:auto;padding:10px 12px;scrollbar-width:none}.st::-webkit-scrollbar{display:none}
+.sti{text-align:center;font-size:12px;cursor:pointer;flex:none;width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sti .nm{display:block;margin-top:4px}
+.yav{position:relative;display:inline-block}.yav i{position:absolute;right:0;bottom:0;background:var(--bl);color:#fff;border:2px solid var(--bg);border-radius:50%;width:22px;height:22px;font-style:normal;font-weight:700;line-height:18px}
+.join{margin:4px 12px 10px;padding:12px 14px;border:1px solid var(--b);border-radius:12px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.post{margin-bottom:14px;border-bottom:1px solid var(--b)}.ph{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 12px}.pn{flex:1;min-width:0;cursor:pointer}.pn b{display:block;line-height:1.15}.pn small{color:var(--m)}
+.med{position:relative;aspect-ratio:4/5;background:#111;overflow:hidden}.med img,.med video{width:100%;height:100%;object-fit:cover;display:block}.med.ph0{display:flex;align-items:center;justify-content:center;aspect-ratio:1/1}
+.dt{color:#fff;font-weight:700;font-size:20px;padding:24px;text-align:center}.mi{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+.pop{position:absolute;inset:0;margin:auto;width:90px;height:90px;color:#fff;animation:pp .7s ease-out forwards;pointer-events:none}@keyframes pp{0%{transform:scale(.3);opacity:0}30%{transform:scale(1.1);opacity:1}100%{transform:scale(1);opacity:0}}
+.ac{display:flex;padding:4px 6px}.pb{padding:0 12px 12px;display:flex;flex-direction:column;gap:3px;line-height:1.35}.up{text-transform:uppercase;font-size:10px;letter-spacing:.3px;margin-top:2px}
+.tb{background:0;border:0;color:var(--bl);font-weight:700;cursor:pointer;padding:6px}.tb.g{color:var(--m)}
+.bt{background:var(--bl);color:#fff;border:0;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer}.bt.g{background:var(--in);color:var(--t)}.bt.s{padding:6px 12px;font-size:13px}.bt.dn{color:var(--rd)}.bt:disabled{opacity:.6;cursor:default}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row2{display:flex;justify-content:space-between;align-items:center;padding-right:14px}
+.sbar{display:flex;align-items:center;gap:8px;background:var(--in);border-radius:10px;padding:0 12px;margin:6px 12px}.sbar input{background:0;padding:10px 0}
+.seg2{display:flex;margin:4px 12px 10px;background:var(--in);border-radius:10px;padding:3px}.seg2 button{flex:1;border:0;background:0;padding:7px;border-radius:8px;font-weight:600;cursor:pointer;color:var(--m)}.seg2 .on{background:var(--bg);color:var(--t);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.fl{display:flex;gap:8px;padding:0 12px 10px}.fl select{width:auto;flex:1}
+.gr{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}.gi{position:relative;aspect-ratio:1/1;overflow:hidden;cursor:pointer;background:#111}.gi img,.gi video{width:100%;height:100%;object-fit:cover}
+.gg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;padding:8px;text-align:center;font-size:13px}.gv{position:absolute;top:6px;right:6px;color:#fff}
+.rw{display:flex;align-items:center;gap:12px;padding:8px 14px}.rw>div{flex:1;min-width:0}.rw .mut{font-size:13px}.cl2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pfh{display:flex;align-items:center;gap:22px;padding:14px 16px}.stats{display:flex;flex:1;justify-content:space-around;text-align:center}.stats b{display:block;font-size:17px}.stats span{font-size:13px;color:var(--m)}
+.pfi{padding:0 16px 10px;display:flex;flex-direction:column;gap:2px}.pfb{display:flex;gap:6px;padding:6px 16px 12px}.pfb .bt{flex:1}
+.rate{margin:0 16px 12px;border:1px solid var(--b);border-radius:12px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}.rate b{display:block;font-size:16px}.ok{color:#22c55e;font-weight:600}
+.cmp{margin:0 16px 12px;border:1px solid var(--b);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}.bar{height:6px;background:var(--in);border-radius:4px}.bar i{display:block;height:100%;background:var(--bl);border-radius:4px}
+.tabs{display:flex;border-top:1px solid var(--b)}.tabs button{flex:1;background:0;border:0;padding:10px;cursor:pointer;color:var(--m);border-top:1px solid transparent;margin-top:-1px;display:flex;justify-content:center}.tabs .on{color:var(--t);border-top-color:var(--t)}
+.card{border:1px solid var(--b);border-radius:12px;margin:0 12px 12px}.card.pad2{border-bottom:1px solid var(--b)}.ofh{display:flex;gap:10px;align-items:center}.bgt{font-weight:700;font-size:17px}
+.st2{font-size:12px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--in);align-self:flex-start}.st2.accepted{color:#22c55e}.st2.rejected{color:var(--rd)}
+details>summary{cursor:pointer;list-style:none}details>summary::-webkit-details-marker{display:none}.ar{border-top:1px solid var(--b);padding:8px 0;display:flex;flex-direction:column;gap:6px}.ar .rw{padding:0;cursor:pointer}
+.empty{margin:20px 16px;padding:24px;border:1px dashed var(--b);border-radius:12px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
+.fm{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}.fm .w{grid-column:1/-1}.fl2{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--m)}.fl2 input[type=checkbox]{width:auto;align-self:flex-start}
+#m{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:50;display:none;align-items:flex-end;justify-content:center}#m.on{display:flex}
+.bx{background:var(--bg);width:100%;max-width:440px;border-radius:16px 16px 0 0;padding:18px;display:flex;flex-direction:column;gap:12px;max-height:90vh;overflow:auto;padding-bottom:calc(18px + env(safe-area-inset-bottom))}.bx.pm{padding:0;max-width:470px}.bx.sh{padding:0;gap:0}
+@media(min-width:600px){#m{align-items:center}.bx{border-radius:14px}}
+.si{background:0;border:0;border-top:1px solid var(--b);padding:15px;font-size:15px;cursor:pointer;width:100%}.si:first-child{border-top:0}.si.dn{color:var(--rd);font-weight:700}
+.drop{border:2px dashed var(--b);border-radius:12px;padding:22px;text-align:center;cursor:pointer;color:var(--m)}.star{background:0;border:0;font-size:30px;color:var(--b);cursor:pointer}.star.on{color:#f5a623}
+.cm{padding:5px 0;font-size:14px}.cl{max-height:40vh;overflow:auto}
+.msgs{display:flex;flex-direction:column;gap:6px;height:calc(100dvh - 54px - 74px);overflow:auto;padding:12px}.bub{max-width:78%;padding:9px 14px;border-radius:20px;background:var(--in);align-self:flex-start;word-break:break-word}.bub.me{background:#3797f0;color:#fff;align-self:flex-end}
+.cin{display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--b)}.cin input{border-radius:22px}
+.bd2{background:var(--bl);color:#fff;border-radius:10px;min-width:20px;height:20px;line-height:20px;text-align:center;font-size:11px;font-weight:700;padding:0 5px}
+#t{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--t);color:var(--bg);padding:10px 18px;border-radius:24px;font-weight:600;z-index:60;display:none;max-width:90vw;text-align:center}
+#ins{display:none;background:#262626;color:#fff;padding:9px 14px;gap:10px;align-items:center;justify-content:center;direction:rtl;font-size:13px}#ins .bt{padding:5px 12px}#ins .x{background:0;border:0;color:#fff;font-size:20px;cursor:pointer}
+.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 12px}.sc{border:1px solid var(--b);border-radius:12px;padding:12px}.sc b{font-size:24px;display:block}.sc span{font-size:13px}
+.chart{display:flex;align-items:flex-end;gap:3px;height:110px;padding:0 14px}.chart i{flex:1;background:var(--bl);border-radius:3px 3px 0 0}
+.wt{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:6px 2px}.wt h3{font-size:22px}
+.env{position:relative;width:104px;height:104px;display:flex;align-items:center;justify-content:center;margin-top:4px}
+.env:before,.env:after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.45),transparent 70%);animation:pl 2.4s ease-out infinite}.env:after{animation-delay:1.2s}
+@keyframes pl{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
+.env svg{position:relative;color:#fff;background:linear-gradient(135deg,#7c3aed,#ec4899,#f59e0b);border-radius:26px;padding:20px;width:86px;height:86px;animation:fl 3s ease-in-out infinite;box-shadow:0 10px 30px rgba(236,72,153,.35)}
+@keyframes fl{50%{transform:translateY(-7px) rotate(-3deg)}}
+.wst{display:flex;align-items:center;justify-content:center;gap:4px;background:var(--in);border-radius:20px;padding:8px 16px;font-size:13px;color:var(--m)}
+.spin{width:14px;height:14px;border:2px solid var(--b);border-top-color:var(--bl);border-radius:50%;display:inline-block;animation:sp 1s linear infinite;margin-right:6px}@keyframes sp{to{transform:rotate(360deg)}}
+.ok2{width:92px;height:92px;border-radius:50%;background:#22c55e;display:flex;align-items:center;justify-content:center;color:#fff;animation:pp2 .55s cubic-bezier(.2,1.4,.4,1);box-shadow:0 10px 30px rgba(34,197,94,.4)}@keyframes pp2{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+.gg{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}
+</style></head><body>
+<div id="ins"><span>ثبّت الموقع على الموبايل لحين إنشاء تطبيق</span><button class="bt s" id="insb">ثبّت الآن</button><button class="x" id="insx" aria-label="close">×</button></div>
+<header id="top"><div class="tb0" id="tb"></div></header>
+<main id="app"><p class="mut pad">Loading...</p></main>
+<nav id="nv"></nav><div id="m"><div class="bx" id="bx"></div></div><div id="t"></div>
+<script>
+const URL_='https://rpkthhsyaaldjdvaqztc.supabase.co',KEY='sb_publishable_3tLAf7lr8xvFm-dloTyaLA_WlGPohj3';
+var FROM_MAIL=/type=(signup|email_change|magiclink)/.test(location.hash);
+let sb=null;try{sb=supabase.createClient(URL_,KEY)}catch(e){}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const hue=s=>{let n=0;for(const c of String(s))n=(n*31+c.charCodeAt(0))%360;return n};
+const grad=s=>`linear-gradient(135deg,hsl(${hue(s)},70%,45%),hsl(${(hue(s)+60)%360},75%,32%))`;
+const ini=n=>String(n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const IC={home:'<path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',plus:'<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/>',briefcase:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 13h18"/>',heart:'<path d="M12 20.5s-8-4.8-8-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 8 2.7c0 5.4-8 10.2-8 10.2z"/>',send:'<path d="M21 3 3 10.5l7 3 3 7z"/><path d="m21 3-11 10.5"/>',comment:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"/>',menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',dots:'<circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/>',back:'<path d="m15 5-7 7 7 7"/>',play:'<path d="M7 4v16l13-8z"/>',grid:'<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>',star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',mute:'<path d="M11 5 6 9H3v6h3l5 4zM22 9l-6 6M16 9l6 6"/>',sound:'<path d="M11 5 6 9H3v6h3l5 4zM15.5 8.5a5 5 0 0 1 0 7"/>'};
+IC.mail='<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 8 9 6 9-6"/>';IC.check='<path d="m5 12.5 4.5 4.5L19 7.5"/>';
+const ico=(n,z=24,f)=>`<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="${f?'currentColor':'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[n]||''}</svg>`;
+const AVU={};
+const av=(n,id,z=40)=>AVU[id]?`<img class="av" src="${esc(AVU[id])}" alt="" style="width:${z}px;height:${z}px">`:`<div class="av" style="width:${z}px;height:${z}px;background:${grad(id)};font-size:${z*.38}px">${esc(ini(n))}</div>`;
+const rav=(n,id,z=40)=>`<span class="ring">${av(n,id,z)}</span>`;
+const money=(a,b,c)=>a==null?'Negotiable':`${esc(c||'USD')} ${Math.round(a)}${b?'-'+Math.round(b):''}`;
+const ago=d=>{const m=(Date.now()-new Date(d))/6e4;return m<60?Math.max(1,~~m)+'m':m<1440?~~(m/60)+'h':~~(m/1440)+'d'};
+const cnt=v=>(v&&v[0]&&v[0].count)||0;
+const LS={g(k){try{return localStorage.getItem(k)}catch(e){return null}},s(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let D={videos:[],creators:[],offers:[],rate:{}},U=null,P=null,LK=new Set(),Q='',DEMO=false,AT='creator',T='home',ARG=null,HIST=[];
+let ME={},CN={},AP={},PR={},BR={},RV={},MSG={},UNR=0,EX=null,NF='',BF='',OF='open',PT='posts',OPENP=null,ADMIN=false,AS=null,ASL=false,PH={};
+function toast(m){const t=$('#t');t.textContent=m;t.style.display='block';clearTimeout(toast.i);toast.i=setTimeout(()=>t.style.display='none',2600)}
+function modal(h,c){$('#bx').className='bx '+(c||'');$('#bx').innerHTML=h;$('#m').classList.add('on')}
+function closeM(){$('#m').classList.remove('on');OPENP=null;stopWait()}
+$('#m').addEventListener('click',e=>{if(e.target.id==='m')closeM()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+const sheet=it=>modal(`${it.map(([l,f,d])=>`<button class="si ${d?'dn':''}" onclick="closeM();${f}">${l}</button>`).join('')}<button class="si" onclick="closeM()">Cancel</button>`,'sh');
+
+function demo(){DEMO=true;const N=['Sara Ahmed','Omar Khaled','Nour Hassan','Youssef Ali','Mariam Adel','Karim Samir','Laila Mostafa','Hana Tarek'],NI=['Beauty','Fashion','Tech','Food','Fitness','Travel','Pets','Lifestyle'];
+D.creators=N.map((n,i)=>({id:'d'+i,niches:[NI[i],NI[(i+3)%8]],age_range:['18-24','25-34'][i%2],rate_min:50+i*20,rate_max:150+i*40,currency:'USD',is_available:i%4!=3,profiles:{display_name:n,country:'Egypt',bio:'UGC creator focused on '+NI[i].toLowerCase()+' content.'}}));
+D.videos=D.creators.flatMap((c,i)=>[0,1].map(j=>({id:'dv'+i+j,title:['Unboxing + honest review','Get ready with me'][j],description:'Sample UGC piece.',niche:c.niches[0],media_type:'video',created_at:new Date(Date.now()-(i*2+j)*36e5).toISOString(),creator_id:c.id,likes:[{count:20+i*7+j*3}],comments:[{count:i+j}],creator_profiles:c})));
+D.offers=NI.slice(0,5).map((n,i)=>({id:'do'+i,brand_id:'db'+i,title:'Looking for UGC videos - '+n,description:'Authentic short-form videos. Product shipped free.',niche:n,budget_min:100+i*40,budget_max:300+i*80,currency:'USD',deadline:new Date(Date.now()+864e5*(10+i*3)).toISOString().slice(0,10),brand_profiles:{company_name:['Glow Lab','Urban Thread','Petopia','TechNest','FreshBite'][i]}}));D.rate={}}
+async function load(){
+ if(!sb)return demo();
+ try{
+  const [v,c,o,r]=await Promise.all([
+   sb.from('videos').select('id,title,description,niche,media_type,video_url,created_at,creator_id,likes(count),comments(count),creator_profiles(rate_min,rate_max,currency,age_range,niches,profiles(display_name,country,avatar_url))').order('created_at',{ascending:false}).limit(200),
+   sb.from('creator_profiles').select('id,niches,age_range,rate_min,rate_max,currency,is_available,profiles(display_name,country,bio,avatar_url)').limit(200),
+   sb.from('offers').select('*,brand_profiles(company_name,industry,profiles(avatar_url))').eq('status','open').order('created_at',{ascending:false}).limit(100),
+   sb.from('creator_ratings').select('*')]);
+  if(v.error||c.error||o.error)throw new Error('load');
+  D.videos=v.data||[];D.creators=c.data||[];D.offers=o.data||[];D.rate={};(r.data||[]).forEach(x=>D.rate[x.creator_id]=x);
+  D.videos.sort((a,b)=>hue(a.id)-hue(b.id));
+  D.videos.forEach(v=>{const q=v.creator_profiles&&v.creator_profiles.profiles;if(q&&q.avatar_url)AVU[v.creator_id]=q.avatar_url});
+  D.creators.forEach(c=>{if(c.profiles&&c.profiles.avatar_url)AVU[c.id]=c.profiles.avatar_url});
+  D.offers.forEach(o=>{const q=o.brand_profiles&&o.brand_profiles.profiles;if(q&&q.avatar_url)AVU[o.brand_id]=q.avatar_url});
+  if(!D.videos.length&&!D.creators.length)demo();
+ }catch(e){demo()}
+}
+/* ---------- session + my data ---------- */
+async function setUser(u){if(sb)sb.removeAllChannels();MSG={};UNR=0;ADMIN=false;AS=null;U=u;P=null;LK=new Set();CN={};AP={};ME={};
+ if(u&&sb){try{const l=await sb.from('likes').select('video_id').eq('user_id',u.id);(l.data||[]).forEach(x=>LK.add(x.video_id));await Promise.all([refreshMe(),refreshCN()]);subRT();const ad=await sb.rpc('is_admin');ADMIN=ad.data===true}catch(e){}}
+ if(!U&&['me','edit','chats','chat','activity','hiring'].includes(T)){T='home';HIST=[]}
+ draw();if(U&&(PEND||FROM_MAIL)){FROM_MAIL=false;onConfirmed()}}
+async function logout(){if(sb)await sb.auth.signOut();HIST=[];T='home';toast('Logged out')}
+async function refreshMe(){if(!U||!sb)return;const q=(t,c)=>sb.from(t).select(c);
+ const [p,c,b,ap,mv,mo,co,rv,ph]=await Promise.all([
+  q('profiles','display_name,account_type,avatar_url,bio,country').eq('id',U.id).single(),
+  q('creator_profiles','*').eq('id',U.id).maybeSingle(),q('brand_profiles','*').eq('id',U.id).maybeSingle(),
+  q('applications','offer_id,status,created_at,offers(title,brand_profiles(company_name))').eq('creator_id',U.id).order('created_at',{ascending:false}),
+  q('videos','id,title,description,niche,media_type,video_url,created_at,creator_id').eq('creator_id',U.id).order('created_at',{ascending:false}),
+  q('offers','*,applications(id,creator_id,message,status,collaboration_id,created_at)').eq('brand_id',U.id).order('created_at',{ascending:false}),
+  q('collaborations','id,status').eq('brand_id',U.id),q('reviews','collaboration_id').eq('brand_id',U.id),q('contacts','phone').eq('user_id',U.id).maybeSingle()]);
+ P=p.data;ME={phone:(ph.data||{}).phone||'',p:p.data,c:c.data,b:b.data,videos:mv.data||[],offers:mo.data||[],apps:ap.data||[],names:{},co:{},rev:new Set((rv.data||[]).map(x=>x.collaboration_id))};
+ (co.data||[]).forEach(x=>ME.co[x.id]=x.status);AP={};ME.apps.forEach(a=>AP[a.offer_id]=a.status);
+ const want=LS.g('ugc_at');if(want){LS.s('ugc_at','');if(P&&P.account_type!==want){const sw=await sb.rpc('choose_account_type',{t:want});if(!sw.error)return refreshMe()}}
+ if(P&&P.avatar_url)AVU[U.id]=P.avatar_url;
+ const ids=[...new Set(ME.offers.flatMap(o=>(o.applications||[]).map(a=>a.creator_id)))];
+ if(ids.length){const n=await sb.from('profiles').select('id,display_name,avatar_url').in('id',ids);(n.data||[]).forEach(x=>{ME.names[x.id]=x.display_name;if(x.avatar_url)AVU[x.id]=x.avatar_url})}}
+async function refreshCN(){if(!U||!sb||DEMO)return;
+ const r=await sb.from('connections').select('id,requester_id,addressee_id,status').or('requester_id.eq.'+U.id+',addressee_id.eq.'+U.id);if(r.error)return;
+ CN={};(r.data||[]).forEach(c=>{const o=c.requester_id===U.id?c.addressee_id:c.requester_id;CN[o]={id:c.id,status:c.status,mine:c.requester_id===U.id}});
+ const ids=Object.keys(CN).filter(k=>!PR[k]);
+ if(ids.length){const p=await sb.from('profiles').select('id,display_name,account_type,avatar_url').in('id',ids);(p.data||[]).forEach(x=>{PR[x.id]=x;if(x.avatar_url)AVU[x.id]=x.avatar_url})}
+ await loadMsgs();renderTop();if(T==='chat')paintChat();else if(['chats','activity'].includes(T))render()}
+const actN=()=>Object.values(CN).filter(c=>c.status==='pending'&&!c.mine).length+((P&&P.account_type==='brand'&&ME.offers)?ME.offers.reduce((n,o)=>n+(o.applications||[]).filter(a=>a.status==='pending').length,0):0);
+function pdata(id){if(U&&id===U.id&&ME.p){const p=ME.p;return{id,name:p.display_name,bio:p.bio,country:p.country,type:p.account_type,c:ME.c,b:ME.b}}
+ const c=D.creators.find(x=>x.id===id);if(c){const p=c.profiles||{};return{id,name:p.display_name,bio:p.bio,country:p.country,type:'creator',c}}return BR[id]||null}
+async function ensureProf(id){if(pdata(id)||!sb||DEMO)return;
+ const [p,c,b]=await Promise.all([sb.from('profiles').select('display_name,account_type,avatar_url,bio,country').eq('id',id).single(),sb.from('creator_profiles').select('*').eq('id',id).maybeSingle(),sb.from('brand_profiles').select('*').eq('id',id).maybeSingle()]);
+ if(!p.data)return;if(p.data.avatar_url)AVU[id]=p.data.avatar_url;BR[id]={id,name:p.data.display_name,bio:p.data.bio,country:p.data.country,type:p.data.account_type,c:c.data,b:b.data};if(T==='u'&&ARG===id)render()}
+async function ensurePhone(id){if(id in PH||!sb||DEMO)return;PH[id]='';const r=await sb.from('contacts').select('phone').eq('user_id',id).maybeSingle();PH[id]=(r.data||{}).phone||'';if(T==='u'&&ARG===id)render()}
+async function ensureRev(id){if(RV[id]||!sb||DEMO)return;RV[id]=[];const r=await sb.from('reviews').select('rating,comment,created_at,brand_profiles(company_name)').eq('creator_id',id).order('created_at',{ascending:false});RV[id]=r.data||[];if(T==='u'&&ARG===id)render()}
+
+/* ---------- navigation ---------- */
+function nav(t,a){HIST.push([T,ARG]);T=t;ARG=a===undefined?null:a;draw();window.scrollTo(0,0)}
+function root(t){HIST=[];T=t;ARG=null;draw();window.scrollTo(0,0)}
+function back(){const h=HIST.pop();if(h){T=h[0];ARG=h[1]}else{T='home';ARG=null}draw()}
+function draw(){renderTop();renderNav();render()}
+const TITLES={activity:'Activity',chats:'Messages',edit:'Edit profile',admin:'Dashboard'};
+function renderTop(){const sub=HIST.length;let left,right='';
+ const who=T==='chat'?PR[ARG]:pdata(ARG),nm=T==='u'||T==='chat'?esc((who&&(who.display_name||who.name))||''):'';
+ left=sub?`<div class="tl"><button class="ib" onclick="back()" aria-label="Back">${ico('back')}</button><b class="tt">${TITLES[T]||nm}</b></div>`:`<span class="logo" onclick="root('home')">UGCHub</span>`;
+ if(U){const a=actN();right=`<button class="ib" onclick="nav('activity')" aria-label="Activity">${ico('heart')}${a?`<span class="bdg">${a}</span>`:''}</button><button class="ib" onclick="nav('chats')" aria-label="Messages">${ico('send')}${UNR?`<span class="bdg">${UNR}</span>`:''}</button>${T==='me'?`<button class="ib" onclick="settings()" aria-label="Menu">${ico('menu')}</button>`:''}`}
+ else right=`<span><button class="lk" onclick="authModal('login')">Log in</button><button class="lk" onclick="authModal('signup')">Sign up</button></span>`;
+ $('#tb').innerHTML=left+`<div>${right}</div>`;
+ const n=U?actN()+UNR:0;document.title=(n?'('+n+') ':'')+'UGCHub - Discover & hire UGC creators'}
+function renderNav(){const r=P&&P.account_type;
+ const tabs=[['home','home'],['explore','search'],['create','plus'],[r==='brand'?'hiring':'offers','briefcase'],['me','me']];
+ $('#nv').innerHTML=tabs.map(([k,i])=>{const on=T===k||(k==='me'&&T==='edit');const inner=i==='me'?(U?av(P?P.display_name:'Me',U.id,28):`<span style="width:28px;height:28px;border-radius:50%;background:var(--in);display:block"></span>`):ico(i,27,on&&i==='home');
+  return `<button class="${on?'on':''}" aria-label="${k}" onclick="${k==='create'?'openCreate()':`root('${k}')`}">${inner}</button>`}).join('')}
+function render(){const m=$('#app');document.body.classList.toggle('nonav',T==='chat');let h='';
+ if(T==='home')h=homeH();else if(T==='explore')h=exploreH();else if(T==='offers')h=offersH();else if(T==='hiring')h=hiringH();
+ else if(T==='activity')h=activityH();else if(T==='chats')h=chatsH();else if(T==='chat')h=chatH();
+ else if(T==='u'){ensureProf(ARG);if(CN[ARG]&&CN[ARG].status==='accepted')ensurePhone(ARG);const d=pdata(ARG);if(d&&d.type==='creator')ensureRev(ARG);h=profileH(ARG)}
+ else if(T==='me')h=U?(ME.p?profileH(U.id):'<p class="mut pad">Loading...</p>'):gate('Your profile');
+ else if(T==='admin')h=adminH();
+ else if(T==='edit')h=U&&ME.p?editH():'<p class="mut pad">Loading...</p>';
+ m.innerHTML=h;watchVideos();if(T==='chat'){const e=$('#msgs');if(e)e.scrollTop=e.scrollHeight}}
+const io=typeof IntersectionObserver!=='undefined'?new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){const p=v.play();if(p&&p.catch)p.catch(()=>{})}else v.pause()}),{threshold:.6}):null;
+function watchVideos(){if(io)document.querySelectorAll('#app .med video').forEach(v=>io.observe(v))}
+const gate=t=>`<div class="empty"><b>${t}</b><span class="mut">Create a free account or log in to continue.</span><div class="row"><button class="bt" onclick="authModal('signup')">Join free</button><button class="bt g" onclick="authModal('login')">Log in</button></div></div>`;
+function need(){if(U)return true;authModal('signup');return false}
+
+/* ---------- home / posts ---------- */
+function MED(v){const id=v.id,real=v.video_url&&v.video_url.startsWith(URL_),dt=`ondblclick="like('${id}');pop(this)"`;
+ if(real&&v.media_type==='image')return `<div class="med" ${dt}><img src="${esc(v.video_url)}" loading="lazy" alt=""></div>`;
+ if(real)return `<div class="med" onclick="vt(this)" ${dt}><video src="${esc(v.video_url)}#t=0.1" muted loop playsinline preload="metadata"></video><span class="mi">${ico('mute',16)}</span></div>`;
+ return `<div class="med ph0" style="background:${grad(id)}" ${dt}>${v.title?`<div class="dt">${esc(v.title)}</div>`:`<span style="color:#fff;opacity:.85">${ico('play',54,1)}</span>`}</div>`}
+function vt(e){const v=e.querySelector('video');v.muted=!v.muted;e.querySelector('.mi').innerHTML=ico(v.muted?'mute':'sound',16)}
+function pop(el){const h=document.createElement('div');h.className='pop';h.innerHTML=ico('heart',90,true);el.appendChild(h);setTimeout(()=>h.remove(),700)}
+function cbS(id){if(U&&id===U.id)return '';const c=CN[id];if(!c)return `<button class="tb" onclick="connect('${id}')">Connect</button>`;if(c.status==='accepted')return '';if(c.mine)return `<button class="tb g" onclick="delC('${id}')">Pending</button>`;return `<button class="tb" onclick="acceptC('${id}')">Accept</button>`}
+function cbB(id,s){const z=s?' s':'',c=CN[id];if(U&&id===U.id)return '';if(!c)return `<button class="bt${z}" onclick="connect('${id}')">Connect</button>`;if(c.status==='accepted')return `<button class="bt g${z}" onclick="openChat('${id}')">Message</button>`;if(c.mine)return `<button class="bt g${z}" onclick="delC('${id}')">Pending</button>`;return `<button class="bt${z}" onclick="acceptC('${id}')">Accept</button>`}
+function postH(v){const cp=v.creator_profiles||{},p=cp.profiles||{},id=v.id,on=LK.has(id),cc=cnt(v.comments),cid=v.creator_id;
+ return `<article class="post" data-pid="${id}"><div class="ph">${rav(p.display_name,cid,34)}<div class="pn" onclick="openProfile('${cid}')"><b>${esc(p.display_name)}</b><small>${esc(v.niche||p.country||'')}</small></div>${cbS(cid)}<button class="ib" onclick="postMenu('${id}')" aria-label="More">${ico('dots')}</button></div>${MED(v)}
+<div class="ac"><button class="ib lb ${on?'lk2':''}" onclick="like('${id}')" aria-label="Like">${ico('heart',26,on)}</button><button class="ib" onclick="comments('${id}')" aria-label="Comments">${ico('comment',26)}</button><button class="ib" onclick="share('${id}')" aria-label="Share">${ico('send',26)}</button></div>
+<div class="pb"><b class="lc">${cnt(v.likes)} likes</b><div><b>${esc(p.display_name)}</b> ${esc(v.description||v.title||'')}</div>${cc?`<a class="mut" onclick="comments('${id}')">View all ${cc} comments</a>`:''}<small class="mut up">${ago(v.created_at)} ago</small></div></article>`}
+function homeH(){const st=D.creators.slice(0,14).map(c=>{const p=c.profiles||{};return `<div class="sti" onclick="openProfile('${c.id}')">${rav(p.display_name,c.id,60)}<span class="nm">${esc((p.display_name||'').split(' ')[0])}</span></div>`}).join('');
+ const mine=U&&P&&P.account_type==='creator'?`<div class="sti" onclick="openCreate()"><div class="yav">${av(P.display_name,U.id,66)}<i>+</i></div><span class="nm">New post</span></div>`:'';
+ const join=U?'':`<div class="join"><b>Join UGCHub</b><span class="mut">Like, connect, message and get hired by brands.</span><button class="bt s" onclick="authModal('signup')">Sign up</button></div>`;
+ return `<div class="wrap hm"><div class="st">${mine}${st}</div>${join}${D.videos.map(postH).join('')||'<p class="mut pad">No posts yet.</p>'}</div>`}
+function paintLike(id){document.querySelectorAll('[data-pid="'+id+'"]').forEach(a=>{const on=LK.has(id),v=D.videos.find(x=>x.id===id),b=a.querySelector('.lb'),c=a.querySelector('.lc');if(b){b.innerHTML=ico('heart',26,on);b.classList.toggle('lk2',on)}if(c)c.textContent=cnt(v&&v.likes)+' likes'})}
+async function like(id){if(!need())return;const on=LK.has(id);on?LK.delete(id):LK.add(id);
+ const v=D.videos.find(x=>x.id===id);if(v)v.likes=[{count:Math.max(0,cnt(v.likes)+(on?-1:1))}];paintLike(id);if(DEMO||!sb)return;
+ const r=on?await sb.from('likes').delete().eq('user_id',U.id).eq('video_id',id):await sb.from('likes').insert({user_id:U.id,video_id:id});if(r.error)toast('Could not save your like')}
+async function share(id){const u=location.origin+location.pathname;try{if(navigator.share)await navigator.share({title:'UGCHub',text:'Check this out on UGCHub',url:u});else{await navigator.clipboard.writeText(u);toast('Link copied')}if(U&&sb&&!DEMO)sb.from('shares').insert({video_id:id,user_id:U.id})}catch(e){}}
+function postMenu(id){const v=D.videos.find(x=>x.id===id);const own=U&&v&&v.creator_id===U.id;sheet([['Share',`share('${id}')`],['Copy profile link',`shareP('${v?v.creator_id:''}')`],...(own?[['Delete post',`delPost('${id}')`,1]]:[])])}
+function openPost(id){const v=D.videos.find(x=>x.id===id)||(ME.videos||[]).filter(x=>x.id===id).map(m=>({...m,creator_profiles:{profiles:{display_name:ME.p.display_name,country:ME.p.country}}}))[0];if(!v)return;OPENP=id;modal(postH(v),'pm')}
+async function comments(id){
+ modal(`<b>Comments</b><div class="cl" id="cl"><p class="mut">Loading...</p></div>${U?`<div class="row"><input id="ci" maxlength="500" placeholder="Add a comment..." onkeydown="if(event.key==='Enter')addC('${id}')"><button class="bt" onclick="addC('${id}')">Post</button></div>`:`<button class="bt" onclick="authModal('login')">Log in to comment</button>`}`);
+ let l=[];if(sb&&!DEMO){const r=await sb.from('comments').select('body,created_at,profiles(display_name)').eq('video_id',id).order('created_at').limit(100);l=r.data||[]}
+ const e=$('#cl');if(e)e.innerHTML=l.length?l.map(c=>`<div class="cm"><b>${esc(c.profiles&&c.profiles.display_name)}</b> ${esc(c.body)}</div>`).join(''):'<p class="mut">No comments yet. Start the conversation.</p>'}
+async function addC(id){const b=$('#ci').value.trim();if(!b)return;if(DEMO)return toast('Demo mode');
+ const r=await sb.from('comments').insert({video_id:id,user_id:U.id,body:b});if(r.error)return toast('Could not post comment');
+ const v=D.videos.find(x=>x.id===id);if(v)v.comments=[{count:cnt(v.comments)+1}];comments(id);render()}
+async function delPost(id){if(!confirm('Delete this post?'))return;const v=(ME.videos||[]).find(x=>x.id===id)||D.videos.find(x=>x.id===id);const r=await sb.from('videos').delete().eq('id',id);if(r.error)return toast('Could not delete');
+ const k=v&&v.video_url&&v.video_url.split('/object/public/videos/')[1];if(k)sb.storage.from('videos').remove([k]);await load();await refreshMe();draw();toast('Post deleted')}
+
+/* ---------- explore ---------- */
+const gi=v=>{const real=v.video_url&&v.video_url.startsWith(URL_);const inner=real?(v.media_type==='image'?`<img src="${esc(v.video_url)}" loading="lazy" alt="">`:`<video src="${esc(v.video_url)}#t=0.1" muted playsinline preload="metadata"></video>`):`<div class="gg" style="background:${grad(v.id)}">${esc(v.title)}</div>`;
+ return `<div class="gi" onclick="openPost('${v.id}')">${inner}${real&&v.media_type!=='image'?`<span class="gv">${ico('play',18,1)}</span>`:''}</div>`};
+const exMode=()=>EX||(P&&P.account_type==='brand'?'people':'posts');
+function personRow(c){const p=c.profiles||{},r=D.rate[c.id];return `<div class="rw"><div style="flex:none;cursor:pointer" onclick="openProfile('${c.id}')">${rav(p.display_name,c.id,52)}</div><div style="cursor:pointer" onclick="openProfile('${c.id}')"><b>${esc(p.display_name)}</b><br><span class="mut">${esc((c.niches||[]).slice(0,2).join(' · '))}${p.country?' · '+esc(p.country):''}${c.age_range?' · '+esc(c.age_range):''}</span><br><span class="mut">${r?'★ '+r.avg_rating+' ('+r.review_count+') · ':''}${money(c.rate_min,c.rate_max,c.currency)}${c.is_available===false?' · Booked':''}</span></div>${cbB(c.id,1)}</div>`}
+function resH(){const q=Q.trim().toLowerCase();
+ if(exMode()==='posts'){const vs=D.videos.filter(v=>!q||[v.title,v.niche,((v.creator_profiles||{}).profiles||{}).display_name].join(' ').toLowerCase().includes(q));return vs.length?`<div class="gr">${vs.map(gi).join('')}</div>`:'<p class="mut pad">Nothing found.</p>'}
+ const l=D.creators.filter(c=>{const p=c.profiles||{};return(!q||[p.display_name,(c.niches||[]).join(' '),p.country].join(' ').toLowerCase().includes(q))&&(!NF||(c.niches||[]).includes(NF))&&(!BF||(c.rate_min!=null&&c.rate_min<=+BF))}).sort((a,b)=>((D.rate[b.id]||{}).avg_rating||0)-((D.rate[a.id]||{}).avg_rating||0));
+ return l.map(personRow).join('')||'<p class="mut pad">No creators match these filters.</p>'}
+function onQ(v){Q=v;const e=$('#res');if(e)e.innerHTML=resH()}
+function exploreH(){const mode=exMode(),ns=[...new Set(D.creators.flatMap(c=>c.niches||[]))].sort();
+ return `<div class="wrap"><div class="sbar">${ico('search',18)}<input id="q" placeholder="Search creators, niches, countries" value="${esc(Q)}" oninput="onQ(this.value)"></div>
+ <div class="seg2"><button class="${mode==='posts'?'on':''}" onclick="EX='posts';render()">Posts</button><button class="${mode==='people'?'on':''}" onclick="EX='people';render()">Creators</button></div>
+ ${mode==='people'?`<div class="fl"><select onchange="NF=this.value;render()"><option value="">All niches</option>${ns.map(n=>`<option ${n===NF?'selected':''}>${esc(n)}</option>`).join('')}</select><select onchange="BF=this.value;render()">${[['','Any budget'],['100','Up to $100'],['200','Up to $200'],['500','Up to $500']].map(([v,t])=>`<option value="${v}" ${v===BF?'selected':''}>${t}</option>`).join('')}</select></div>`:''}<div id="res">${resH()}</div></div>`}
+
+/* ---------- offers / hiring ---------- */
+function ob(o){if(U&&o.brand_id===U.id)return '';const st=AP[o.id];if(st)return `<button class="bt g s" disabled>${st==='pending'?'Applied':st==='accepted'?'Accepted':'Not selected'}</button>`;if(P&&P.account_type==='brand')return '';return `<button class="bt s" onclick="apply('${o.id}')">Apply</button>`}
+function ofH(o){const b=o.brand_profiles||{};return `<div class="pad2"><div class="ofh" style="cursor:pointer" onclick="openProfile('${o.brand_id}')">${rav(b.company_name,o.brand_id||o.id,40)}<div><b>${esc(b.company_name)}</b><br><span class="mut">${esc(o.niche||b.industry||'')}${o.deadline?' · due '+esc(o.deadline):''}</span></div></div><b>${esc(o.title)}</b><span class="mut cl2">${esc(o.description||'')}</span><div class="row2" style="padding:0"><span class="bgt">${money(o.budget_min,o.budget_max,o.currency)}</span>${ob(o)}</div></div>`}
+function offersH(){const isC=U&&P&&P.account_type==='creator';
+ const seg=isC?`<div class="seg2"><button class="${OF==='open'?'on':''}" onclick="OF='open';render()">Open offers</button><button class="${OF==='mine'?'on':''}" onclick="OF='mine';render()">My applications (${(ME.apps||[]).length})</button></div>`:'';
+ const body=isC&&OF==='mine'?((ME.apps||[]).map(a=>{const o=a.offers||{};return `<div class="pad2"><b>${esc(o.title||'Offer')}</b><span class="mut">${esc((o.brand_profiles||{}).company_name||'')} · ${ago(a.created_at)} ago</span><span class="st2 ${a.status}">${a.status==='pending'?'Under review':a.status==='accepted'?'Accepted':'Not selected'}</span></div>`}).join('')||'<div class="empty"><b>No applications yet</b><span class="mut">Apply to an open offer and track its status here.</span></div>'):(D.offers.map(ofH).join('')||'<div class="empty"><b>No open offers right now</b><span class="mut">Check back soon. Brands post new offers every day.</span></div>');
+ return `<div class="wrap"><h2 class="pt">Opportunities</h2>${seg}${body}</div>`}
+function apply(id){if(!need())return;if(P&&P.account_type!=='creator')return toast('Only creator accounts can apply');
+ modal(`<b>Apply to this offer</b><textarea id="am" rows="4" maxlength="1000" placeholder="Introduce yourself, share your rate and a link to your best work."></textarea><button class="bt" onclick="sendApply('${id}')">Send application</button>`)}
+async function sendApply(id){const msg=$('#am').value.trim();closeM();if(DEMO)return toast('Demo mode');
+ const r=await sb.from('applications').insert({offer_id:id,creator_id:U.id,message:msg||null});if(!r.error){await refreshMe();draw()}toast(r.error?(r.error.code==='23505'?'You already applied':'Could not apply'):'Application sent. You will be notified.')}
+function appRow(a){const cs=a.collaboration_id?ME.co[a.collaboration_id]:null,nm=esc(ME.names[a.creator_id]||'Creator');let act='';
+ if(a.status==='pending')act=`<button class="bt s" onclick="setApp('${a.id}','accepted')">Accept</button><button class="bt g s" onclick="setApp('${a.id}','rejected')">Reject</button>`;
+ else if(a.status==='accepted')act=`<button class="bt g s" onclick="openChat('${a.creator_id}')">Message</button>`+(ME.rev.has(a.collaboration_id)?'<span class="mut">Reviewed</span>':`<button class="bt s" onclick="reviewM('${a.collaboration_id}','${a.creator_id}')">${cs==='completed'?'Review':'Complete & review'}</button>`);
+ else act='<span class="mut">Rejected</span>';
+ return `<div class="ar"><div class="rw" onclick="openProfile('${a.creator_id}')">${av(nm,a.creator_id,36)}<div><b>${nm}</b><br><span class="mut cl2">${esc(a.message||'')}</span></div></div><div class="row">${act}</div></div>`}
+function hiringH(){if(!U)return gate('Hiring');if(!ME.p)return '<p class="mut pad">Loading...</p>';if(P.account_type!=='brand')return offersH();
+ const os=ME.offers;return `<div class="wrap"><div class="row2"><h2 class="pt">Hiring</h2><button class="bt s" onclick="openCreate()">New offer</button></div>${os.map(o=>{const ap=o.applications||[],pend=ap.filter(a=>a.status==='pending').length;
+ return `<details class="card pad2" ${pend?'open':''}><summary><b>${esc(o.title)}</b><br><span class="mut">${o.status==='open'?'Open':'Closed'} · ${money(o.budget_min,o.budget_max,o.currency)} · ${ap.length} applicants${pend?' · '+pend+' new':''}</span></summary>${ap.map(appRow).join('')||'<p class="mut">No applicants yet. Creators will see this offer in Opportunities.</p>'}<div class="row"><button class="bt g s" onclick="setOffer('${o.id}','${o.status==='open'?'closed':'open'}')">${o.status==='open'?'Close offer':'Reopen'}</button><button class="bt g s dn" onclick="delOffer('${o.id}')">Delete</button></div></details>`}).join('')||`<div class="empty"><b>Post your first offer</b><span class="mut">Say what you need and your budget. Applicants show up here.</span><button class="bt" onclick="openCreate()">New offer</button></div>`}</div>`}
+async function setApp(id,st){if(DEMO)return;const r=await sb.rpc('set_application_status',{app_id:id,new_status:st});if(r.error)return toast('Could not update');await refreshMe();await refreshCN();draw();toast(st==='accepted'?'Accepted. You can message them now':'Rejected')}
+function reviewM(cid,crid){modal(`<b>Complete & review</b><div id="rt" data-v="0">${[1,2,3,4,5].map(n=>`<button class="star" onclick="setStar(${n})">★</button>`).join('')}</div><textarea id="rc" rows="3" maxlength="1000" placeholder="How was working with this creator?"></textarea><button class="bt" onclick="sendReview('${cid}','${crid}')">Post review</button>`)}
+function setStar(n){const r=$('#rt');r.dataset.v=n;r.querySelectorAll('.star').forEach((b,i)=>b.classList.toggle('on',i<n))}
+async function sendReview(cid,crid){const rt=+$('#rt').dataset.v;if(!rt)return toast('Pick a rating');if(DEMO)return;
+ if(ME.co[cid]!=='completed'){const u=await sb.from('collaborations').update({status:'completed'}).eq('id',cid);if(u.error)return toast('Could not complete')}
+ const r=await sb.from('reviews').insert({collaboration_id:cid,brand_id:U.id,creator_id:crid,rating:rt,comment:$('#rc').value.trim()||null});
+ if(r.error)return toast('Could not save review');closeM();delete RV[crid];await refreshMe();await load();draw();toast('Review posted')}
+async function setOffer(id,st){const r=await sb.from('offers').update({status:st}).eq('id',id);if(r.error)return toast('Failed');await load();await refreshMe();draw()}
+async function delOffer(id){if(!confirm('Delete this offer and its applications?'))return;const r=await sb.from('offers').delete().eq('id',id);if(r.error)return toast('Could not delete');await load();await refreshMe();draw()}
+
+/* ---------- activity / chats ---------- */
+function activityH(){if(!U)return gate('Activity');
+ const inn=Object.entries(CN).filter(([o,c])=>c.status==='pending'&&!c.mine),nm=o=>esc((PR[o]||{}).display_name||'User');let h='';
+ if(inn.length)h+=`<h2 class="pt">Connection requests</h2>`+inn.map(([o])=>`<div class="rw"><div style="flex:none;cursor:pointer" onclick="openProfile('${o}')">${rav((PR[o]||{}).display_name,o,46)}</div><div><b>${nm(o)}</b> wants to connect</div><button class="bt s" onclick="acceptC('${o}')">Accept</button><button class="bt g s" onclick="delC('${o}')">Decline</button></div>`).join('');
+ if(P&&P.account_type==='creator'&&(ME.apps||[]).length)h+=`<h2 class="pt">Your applications</h2>`+ME.apps.slice(0,15).map(a=>{const o=a.offers||{};return `<div class="rw" onclick="OF='mine';root('offers')" style="cursor:pointer"><div><b>${esc((o.brand_profiles||{}).company_name||'Brand')}</b> · ${esc(o.title||'')}<br><span class="st2 ${a.status}">${a.status==='pending'?'Under review':a.status==='accepted'?'Accepted':'Not selected'}</span></div><span class="mut">${ago(a.created_at)}</span></div>`}).join('');
+ if(P&&P.account_type==='brand'){const ps=(ME.offers||[]).flatMap(o=>(o.applications||[]).filter(a=>a.status==='pending').map(a=>({o,a})));if(ps.length)h+=`<h2 class="pt">New applicants</h2>`+ps.slice(0,15).map(({o,a})=>`<div class="rw" onclick="root('hiring')" style="cursor:pointer">${av(ME.names[a.creator_id],a.creator_id,40)}<div><b>${esc(ME.names[a.creator_id]||'Creator')}</b> applied to ${esc(o.title)}</div><span class="mut">${ago(a.created_at)}</span></div>`).join('')}
+ return `<div class="wrap">${h||'<div class="empty"><b>Nothing new</b><span class="mut">Connection requests and application updates show up here.</span></div>'}</div>`}
+const last=o=>{const a=MSG[o]||[];return a[a.length-1]};
+function chatsH(){if(!U)return gate('Your messages');
+ const ok=Object.entries(CN).filter(([o,c])=>c.status==='accepted').map(([o])=>o).sort((a,b)=>{const x=last(a),y=last(b);return (y?+new Date(y.created_at):0)-(x?+new Date(x.created_at):0)});
+ return `<div class="wrap"><h2 class="pt">Messages</h2>${ok.map(o=>{const m=last(o),un=(MSG[o]||[]).filter(x=>x.receiver_id===U.id&&!x.read_at).length,q=PR[o]||{};return `<div class="rw" style="cursor:pointer" onclick="openChat('${o}')">${av(q.display_name,o,52)}<div><b>${esc(q.display_name||'User')}</b><br><span class="mut">${m?esc((m.sender_id===U.id?'You: ':'')+m.body.slice(0,46)):'Say hi'}</span></div>${un?`<span class="bd2">${un}</span>`:''}</div>`}).join('')||'<div class="empty"><b>No messages yet</b><span class="mut">Once a brand accepts your application, or someone accepts your connection, you can chat here.</span></div>'}</div>`}
+function chatH(){return `<div class="wrap" style="padding:0"><div class="msgs" id="msgs">${msgsH()}</div><div class="cin"><input id="mi" placeholder="Message..." maxlength="2000" onkeydown="if(event.key==='Enter')sendMsg()"><button class="bt" onclick="sendMsg()">Send</button></div></div>`}
+function msgsH(){const a=MSG[ARG]||[];return a.length?a.map(m=>`<div class="bub ${m.sender_id===U.id?'me':''}">${esc(m.body)}</div>`).join(''):'<p class="mut" style="text-align:center">Say hi</p>'}
+function paintChat(){const e=$('#msgs');if(!e)return;const nb=e.scrollHeight-e.scrollTop-e.clientHeight<90;e.innerHTML=msgsH();if(nb)e.scrollTop=e.scrollHeight}
+async function loadMsgs(){if(!U||!sb||DEMO)return;
+ const r=await sb.from('messages').select('id,sender_id,receiver_id,body,created_at,read_at').or('sender_id.eq.'+U.id+',receiver_id.eq.'+U.id).order('created_at').limit(500);if(r.error)return;
+ MSG={};UNR=0;(r.data||[]).forEach(m=>{const o=m.sender_id===U.id?m.receiver_id:m.sender_id;(MSG[o]=MSG[o]||[]).push(m);if(m.receiver_id===U.id&&!m.read_at)UNR++});if(T==='chat')markRead(ARG)}
+async function markRead(o){const l=(MSG[o]||[]).filter(m=>m.receiver_id===U.id&&!m.read_at);if(!l.length)return;const t=new Date().toISOString();l.forEach(m=>m.read_at=t);UNR=Math.max(0,UNR-l.length);renderTop();
+ await sb.from('messages').update({read_at:t}).eq('receiver_id',U.id).eq('sender_id',o).is('read_at',null)}
+async function sendMsg(){const i=$('#mi'),b=i.value.trim();if(!b||T!=='chat')return;if(DEMO)return toast('Demo mode');i.value='';
+ const r=await sb.from('messages').insert({sender_id:U.id,receiver_id:ARG,body:b}).select().single();if(r.error){i.value=b;return toast('Could not send. Are you still connected?')}
+ (MSG[ARG]=MSG[ARG]||[]).push(r.data);paintChat();const e=$('#msgs');if(e)e.scrollTop=e.scrollHeight}
+function openChat(o){if(!need())return;if(T==='chat'&&ARG===o)return;nav('chat',o);markRead(o)}
+function subRT(){if(!sb||!U||DEMO)return;sb.channel('m'+U.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'receiver_id=eq.'+U.id},pl=>{const m=pl.new,o=m.sender_id;(MSG[o]=MSG[o]||[]).push(m);if(!PR[o])refreshCN();
+  if(T==='chat'&&ARG===o){paintChat();markRead(o)}else{UNR++;renderTop();toast('New message');if(T==='chats')render()}}).subscribe()}
+
+/* ---------- connections ---------- */
+async function connect(id){if(!need())return;if(id===U.id)return toast("That's you");if(DEMO)return toast('Demo mode');
+ const r=await sb.from('connections').insert({requester_id:U.id,addressee_id:id});if(r.error)return toast(r.error.code==='23505'?'Already connected or pending':'Could not send request');
+ toast('Request sent. Waiting for them to accept');await refreshCN();draw()}
+async function delC(id){const c=CN[id];if(!c)return;const r=await sb.from('connections').delete().eq('id',c.id);if(r.error)return toast('Failed, try again');await refreshCN();draw()}
+async function acceptC(id){const c=CN[id];if(!c)return;const r=await sb.from('connections').update({status:'accepted'}).eq('id',c.id);if(r.error)return toast('Failed, try again');toast('Connected. You can message them now');await refreshCN();draw()}
+
+/* ---------- profiles ---------- */
+function openProfile(id){if(!id)return;closeM();if(U&&id===U.id)return root('me');nav('u',id)}
+function pct(d){const c=d.c||{},b=d.b||{},a=d.type==='creator'?[AVU[d.id],d.bio,d.country,(c.niches||[]).length,c.rate_min!=null,c.age_range]:[AVU[d.id],d.bio,d.country,b.industry,b.website];return Math.round(a.filter(Boolean).length/a.length*100)}
+function profileH(id){const d=pdata(id);if(!d)return '<p class="mut pad">Loading...</p>';
+ const own=U&&id===U.id,isC=d.type==='creator',c=d.c||{},b=d.b||{};
+ const vs=own?(ME.videos||[]).map(m=>D.videos.find(x=>x.id===m.id)||m):D.videos.filter(v=>v.creator_id===id),r=D.rate[id];
+ const stats=isC?[[vs.length,'posts'],[r?r.avg_rating:'-','rating'],[r?r.review_count:0,'reviews']]:[[D.offers.filter(o=>o.brand_id===id).length,'open offers'],[b.typical_budget_min!=null?'$'+Math.round(b.typical_budget_min)+'+':'-','budget']];
+ const p=pct(d);
+ const btns=own?`<button class="bt g" onclick="nav('edit')">Edit profile</button><button class="bt g" onclick="shareP('${id}')">Share profile</button>${ADMIN?`<button class="bt g" onclick="nav('admin')">Dashboard</button>`:''}`:`${cbB(id)}<button class="bt g" onclick="shareP('${id}')">Share</button>`;
+ let body;
+ if(isC){const rv=RV[id]||[];
+  body=`<div class="tabs"><button class="${PT==='posts'?'on':''}" onclick="PT='posts';render()" aria-label="Posts">${ico('grid')}</button><button class="${PT==='reviews'?'on':''}" onclick="PT='reviews';render()" aria-label="Reviews">${ico('star')}</button></div>`+
+  (PT==='reviews'?(rv.map(x=>`<div class="pad2"><b>${'★'.repeat(x.rating)}<span class="mut">${'★'.repeat(5-x.rating)}</span></b><span>${esc(x.comment||'')}</span><span class="mut">${esc((x.brand_profiles||{}).company_name||'Brand')} · ${ago(x.created_at)} ago</span></div>`).join('')||'<div class="empty"><b>No reviews yet</b><span class="mut">Reviews appear after a brand completes a job with this creator.</span></div>'):
+  (vs.length?`<div class="gr">${vs.map(gi).join('')}</div>`:`<div class="empty"><b>${own?'Share your first post':'No posts yet'}</b>${own?'<span class="mut">Brands hire creators they can see. Upload a photo or video of your work.</span><button class="bt" onclick="openCreate()">New post</button>':''}</div>`))}
+ else body=`<h2 class="pt" style="padding-top:14px">Open offers</h2>`+(D.offers.filter(o=>o.brand_id===id).map(ofH).join('')||(own?'<div class="empty"><b>No open offers</b><button class="bt" onclick="openCreate()">New offer</button></div>':'<p class="mut pad">No open offers right now.</p>'));
+ return `<div class="wrap"><div class="pfh">${rav(d.name,id,86)}<div class="stats">${stats.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join('')}</div></div>
+ <div class="pfi"><b>${esc(d.name)}</b><span class="mut">${isC?esc((c.niches||[]).join(' · ')):esc(b.industry||'Brand')}</span><span>${esc(d.bio||'')}</span><span class="mut">${esc(d.country||'')}${c.age_range?' · Age '+esc(c.age_range):''}${b.website?' · '+esc(b.website):''}</span>${(own?ME.phone:PH[id])?`<span class="mut">Phone: <a href="tel:${esc(own?ME.phone:PH[id])}" style="color:var(--bl)">${esc(own?ME.phone:PH[id])}</a> · <a style="color:var(--bl)" href="https://wa.me/${esc((own?ME.phone:PH[id]).replace(/[^0-9]/g,''))}" target="_blank" rel="noopener">WhatsApp</a></span>`:''}</div>
+ ${isC?`<div class="rate"><div><span class="mut">Rate per video</span><b>${money(c.rate_min,c.rate_max,c.currency)}</b></div><span class="${c.is_available!==false?'ok':'mut'}">${c.is_available!==false?'Available':'Booked'}</span></div>`:''}
+ ${own&&p<100?`<div class="cmp"><b>Complete your profile · ${p}%</b><div class="bar"><i style="width:${p}%"></i></div><span class="mut">${isC?'Add a photo, bio, niches, age range and your rate so brands can find and trust you.':'Add a logo, bio, industry and website so creators trust you.'}</span><button class="bt s" style="align-self:flex-start" onclick="nav('edit')">Finish profile</button></div>`:''}
+ <div class="pfb">${btns}</div>${body}</div>`}
+async function shareP(id){const u=location.origin+location.pathname+'#u='+id;try{if(navigator.share)await navigator.share({title:'UGCHub',url:u});else{await navigator.clipboard.writeText(u);toast('Profile link copied')}}catch(e){}}
+function settings(){sheet([...(ADMIN?[['Admin dashboard',"nav('admin')"]]:[]),['Edit profile',"nav('edit')"],['Share my profile',`shareP('${U.id}')`],['Install on phone',"$('#insb').click()"],['Log out','logout()',1]])}
+const num=id=>{const v=$(id).value.trim();return v===''?null:Number(v)};
+const fld=(id,l,v,t,w)=>`<label class="fl2 ${w?'w':''}"><span>${l}</span><input id="${id}" type="${t||'text'}" value="${esc(v==null?'':v)}"></label>`;
+function editH(){const p=ME.p,c=ME.c||{},b=ME.b||{},isC=p.account_type==='creator';
+ const ages=['','18-24','25-34','35-44','45+'].map(a=>`<option ${a===(c.age_range||'')?'selected':''} value="${a}">${a||'Not specified'}</option>`).join('');
+ const common=fld('pn','Name',p.display_name,'',1)+`<label class="fl2 w"><span>Bio</span><textarea id="pb2" rows="3" maxlength="500">${esc(p.bio||'')}</textarea></label>`+fld('pc','Country',p.country)+fld('phn','Mobile number (only your connections see it)',ME.phone,'tel');
+ const spec=isC?`<label class="fl2"><span>Age range</span><select id="ca">${ages}</select></label>`+fld('cn','Niches (comma separated)',(c.niches||[]).join(', '),'',1)+fld('cl','Languages',(c.languages||[]).join(', '))+fld('cr1','Min rate per video',c.rate_min,'number')+fld('cr2','Max rate per video',c.rate_max,'number')+fld('ccu','Currency',c.currency||'USD')+fld('ci','Instagram link',c.instagram_url,'',1)+fld('ct','TikTok link',c.tiktok_url,'',1)+`<label class="fl2 w"><span><input id="cav" type="checkbox" ${c.is_available!==false?'checked':''}> Available for new work</span></label>`
+ :fld('bc','Company name',b.company_name,'',1)+fld('bi','Industry',b.industry)+fld('bw','Website',b.website)+fld('b1','Typical budget min',b.typical_budget_min,'number')+fld('b2','Typical budget max',b.typical_budget_max,'number');
+ return `<div class="wrap"><div style="text-align:center;padding:14px"><label style="cursor:pointer;display:inline-block">${av(p.display_name,U.id,88)}<br><span style="color:var(--bl);font-weight:600">Change photo</span><input type="file" accept="image/*" hidden onchange="upAvatar(this)"></label></div><div class="fm">${common}${spec}</div><div style="padding:16px"><button class="bt" style="width:100%" onclick="saveProfile()">Save</button></div></div>`}
+async function upAvatar(inp){const f=inp.files[0];if(!f)return;if(DEMO)return toast('Demo mode');if(!f.type.startsWith('image/')||f.size>5e6)return toast('Choose an image under 5MB');
+ toast('Uploading...');const path=U.id+'/'+Date.now()+'.'+((f.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,''));
+ const up=await sb.storage.from('avatars').upload(path,f,{contentType:f.type});if(up.error)return toast('Upload failed: '+up.error.message);
+ const url=sb.storage.from('avatars').getPublicUrl(path).data.publicUrl;const r=await sb.from('profiles').update({avatar_url:url}).eq('id',U.id);
+ if(r.error)return toast('Could not save the photo');AVU[U.id]=url;await refreshMe();await load();draw();toast('Photo updated')}
+async function saveProfile(){const nm=$('#pn').value.trim();if(nm.length<2)return toast('Name is too short');if(DEMO)return toast('Demo mode');const isC=ME.p.account_type==='creator';
+ const L=t=>t.split(',').map(x=>x.trim()).filter(Boolean);let r2;
+ if(isC){const a=num('#cr1'),b=num('#cr2');if(a!=null&&b!=null&&b<a)return toast('Max rate must be higher than min')}
+ const pv=$('#phn').value.trim();if(pv&&!PHRE.test(pv))return toast('Enter a valid mobile number');
+ const r1=await sb.from('profiles').update({display_name:nm,bio:$('#pb2').value.trim()||null,country:$('#pc').value.trim()||null}).eq('id',U.id);
+ if(isC)r2=await sb.from('creator_profiles').update({niches:L($('#cn').value),age_range:$('#ca').value||null,languages:L($('#cl').value),rate_min:num('#cr1'),rate_max:num('#cr2'),currency:$('#ccu').value.trim()||'USD',instagram_url:$('#ci').value.trim()||null,tiktok_url:$('#ct').value.trim()||null,is_available:$('#cav').checked}).eq('id',U.id);
+ else r2=await sb.from('brand_profiles').update({company_name:$('#bc').value.trim()||nm,industry:$('#bi').value.trim()||null,website:$('#bw').value.trim()||null,typical_budget_min:num('#b1'),typical_budget_max:num('#b2')}).eq('id',U.id);
+ let r3={};if(pv)r3=await sb.from('contacts').upsert({user_id:U.id,phone:pv,updated_at:new Date().toISOString()});const er=r1.error||r2.error||r3.error;if(er)return toast('Could not save: '+er.message);await refreshMe();await load();toast('Profile saved');HIST=[];T='me';draw()}
+
+/* ---------- create ---------- */
+function openCreate(){if(!U)return authModal('signup');if(!P)return toast('Loading your account...');
+ if(P.account_type==='brand')return modal(`<b>New offer</b><input id="ot" placeholder="Title (e.g. 5 unboxing videos)" maxlength="120"><textarea id="od" rows="3" maxlength="2000" placeholder="What do you need? Deliverables, usage rights, timeline"></textarea><div class="row"><input id="on" placeholder="Niche" style="flex:1"><input id="oc" placeholder="Currency" value="USD" style="width:90px"></div><div class="row"><input id="oa" type="number" placeholder="Budget min" style="flex:1"><input id="ob" type="number" placeholder="Budget max" style="flex:1"></div><label class="fl2"><span>Deadline</span><input id="odl" type="date"></label><button class="bt" onclick="postOffer()">Publish offer</button>`);
+ modal(`<b>New post</b><label class="drop" id="dz">Choose a photo or video<input type="file" id="cf" accept="image/*,video/*" hidden onchange="prevF(this)"></label><div id="cp"></div><textarea id="cd" rows="3" maxlength="1000" placeholder="Write a caption..."></textarea><input id="cn" placeholder="Niche (e.g. Beauty)" maxlength="40"><button class="bt" id="vb" onclick="upPost()">Share</button><span class="mut">Photos up to 10MB, videos up to 50MB.</span>`)}
+function prevF(i){const f=i.files[0];if(!f)return;const u=URL.createObjectURL(f);$('#cp').innerHTML=f.type.startsWith('video/')?`<video src="${u}" controls playsinline style="width:100%;max-height:260px;border-radius:8px"></video>`:`<img src="${u}" alt="" style="width:100%;max-height:260px;object-fit:cover;border-radius:8px">`;$('#dz').firstChild.textContent=f.name}
+async function upPost(){if(DEMO)return toast('Demo mode');const f=($('#cf').files||[])[0];if(!f)return toast('Choose a photo or video');const vid=f.type.startsWith('video/'),img=f.type.startsWith('image/');
+ if(!vid&&!img)return toast('Unsupported file');if(f.size>(vid?50:10)*1048576)return toast(vid?'Video must be under 50MB':'Photo must be under 10MB');
+ const cap=$('#cd').value.trim(),b=$('#vb');b.disabled=true;b.textContent='Uploading...';
+ const path=U.id+'/'+Date.now()+'.'+((f.name.split('.').pop()||(vid?'mp4':'jpg')).toLowerCase().replace(/[^a-z0-9]/g,''));
+ const up=await sb.storage.from('videos').upload(path,f,{contentType:f.type});if(up.error){b.disabled=false;b.textContent='Share';return toast('Upload failed: '+up.error.message)}
+ const url=sb.storage.from('videos').getPublicUrl(path).data.publicUrl;
+ const r=await sb.from('videos').insert({creator_id:U.id,title:cap.slice(0,100),description:cap||null,video_url:url,media_type:vid?'video':'image',niche:$('#cn').value.trim()||null});
+ if(r.error){b.disabled=false;b.textContent='Share';return toast('Could not save post: '+r.error.message)}
+ closeM();await load();await refreshMe();PT='posts';root('me');toast('Posted')}
+async function postOffer(){if(DEMO)return toast('Demo mode');const t=$('#ot').value.trim();if(t.length<3)return toast('Add an offer title');const a=num('#oa'),b=num('#ob');if(a!=null&&b!=null&&b<a)return toast('Max budget must be higher than min');
+ const r=await sb.from('offers').insert({brand_id:U.id,title:t,description:$('#od').value.trim()||null,niche:$('#on').value.trim()||null,budget_min:a,budget_max:b,currency:$('#oc').value.trim()||'USD',deadline:$('#odl').value||null});
+ if(r.error)return toast('Could not publish: '+r.error.message);closeM();await load();await refreshMe();root('hiring');toast('Offer published. Creators can apply now')}
+
+/* ---------- auth ---------- */
+function authModal(m){m=m||'login';const s=m==='signup';
+ modal(`<div style="text-align:center"><span class="logo">UGCHub</span></div><b style="text-align:center">${s?'Sign up to get hired or hire creators':'Welcome back'}</b>${s?`<div class="seg2" style="margin:0"><button class="${AT==='creator'?'on':''}" onclick="setT('creator')">I'm a creator</button><button class="${AT==='brand'?'on':''}" onclick="setT('brand')">I'm hiring</button></div><input id="an" placeholder="${AT==='brand'?'Company name':'Full name'}" maxlength="60"><input id="ph" type="tel" inputmode="tel" placeholder="Mobile number (e.g. +20 10 1234 5678)" autocomplete="tel" maxlength="20"><small class="mut" style="margin-top:-6px">Private. Only people you connect with can see it.</small>`:''}${GOOGLE_ON?`<button class="bt g" onclick="oauth()">Continue with Google</button><div class="mut" style="text-align:center">or use email</div>`:''}<input id="ae" type="email" placeholder="Email" autocomplete="email"><input id="ap" type="password" placeholder="Password (min 6)" autocomplete="${s?'new-password':'current-password'}"><button class="bt" onclick="auth('${m}')">${s?'Create account':'Log in'}</button><p class="mut" style="text-align:center">${s?`Have an account? <a style="color:var(--bl)" onclick="authModal('login')">Log in</a>`:`New here? <a style="color:var(--bl)" onclick="authModal('signup')">Sign up free</a>`}</p>`)}
+function setT(t){const n=$('#an'),e=$('#ae'),h=$('#ph'),a=n?n.value:'',b=e?e.value:'',c=h?h.value:'';AT=t;authModal('signup');$('#an').value=a;$('#ae').value=b;$('#ph').value=c}
+const PHRE=/^\+?[0-9 ()-]{7,20}$/;
+async function auth(m){if(!sb)return toast('Connection unavailable right now');const email=$('#ae').value.trim(),password=$('#ap').value;if(!email||password.length<6)return toast('Enter your email and a 6+ character password');
+ if(m==='login'){const r=await sb.auth.signInWithPassword({email,password});if(r.error){if(/not confirmed/i.test(r.error.message))return waitMail(email,password);return toast(r.error.message)}closeM();toast('Welcome back')}
+ else{const name=$('#an').value.trim(),phone=$('#ph').value.trim();if(name.length<2)return toast('Please enter your name');if(!PHRE.test(phone))return toast('Enter a valid mobile number (digits, optional + at the start)');
+  const r=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname,data:{account_type:AT,display_name:name,phone}}});
+  if(r.error)return toast(r.error.message);
+  if(r.data.user&&r.data.user.identities&&r.data.user.identities.length===0){authModal('login');return toast('This email is already registered. Log in instead')}
+  if(r.data.session){closeM();HIST=[];T='me';toast('Welcome. Finish your profile so brands can find you')}else waitMail(email,password)}}
+let PEND=null,WT=null;
+const MAILS=[[/gmail|googlemail/,'Open Gmail','https://mail.google.com/mail/u/0/#inbox'],[/outlook|hotmail|live|msn/,'Open Outlook','https://outlook.live.com/mail/0/inbox'],[/yahoo|ymail/,'Open Yahoo Mail','https://mail.yahoo.com/'],[/icloud|me\.com|mac\.com/,'Open iCloud Mail','https://www.icloud.com/mail'],[/proton/,'Open Proton Mail','https://mail.proton.me/']];
+function mailLink(e){const d=(e.split('@')[1]||'').toLowerCase(),m=MAILS.find(x=>x[0].test(d));return m?[m[1],m[2]]:['Open your email','mailto:'+e]}
+function waitMail(email,password){PEND={email,password,cool:60,tick:0,busy:false};clearInterval(WT);drawWait();WT=setInterval(tickWait,1000)}
+function drawWait(){const [lb,url]=mailLink(PEND.email);
+ modal(`<div class="wt"><div class="env">${ico('mail',54)}</div><h3>Check your inbox</h3><p class="mut">We sent a confirmation link to<br><b style="color:var(--t)">${esc(PEND.email)}</b></p><p class="mut" dir="rtl">افتح الإيميل واضغط على الرابط، وهندخّلك تلقائياً.</p><div class="wst"><span class="spin"></span>Waiting for you to confirm...</div><a class="bt" href="${esc(url)}" target="_blank" rel="noopener" style="text-decoration:none;display:block;width:100%;text-align:center">${lb}</a><button class="bt g" id="wre" style="width:100%" onclick="resendMail()" disabled>Resend email (60)</button><a class="mut" onclick="cancelWait()">Use a different email</a><small class="mut">Can't find it? Check Spam or Promotions.</small></div>`)}
+async function tickWait(){if(!PEND)return;PEND.tick++;const b=$('#wre');
+ if(PEND.cool>0){PEND.cool--;if(b){b.disabled=PEND.cool>0;b.textContent=PEND.cool>0?`Resend email (${PEND.cool})`:'Resend email'}}
+ if(PEND&&PEND.tick%20===0&&!PEND.busy&&sb){PEND.busy=true;try{await sb.auth.signInWithPassword({email:PEND.email,password:PEND.password})}catch(e){}if(PEND)PEND.busy=false}
+ if(PEND&&PEND.tick>900)stopWait()}
+async function resendMail(){if(!PEND||PEND.cool>0||!sb)return;const r=await sb.auth.resend({type:'signup',email:PEND.email,options:{emailRedirectTo:location.origin+location.pathname}});if(r.error)return toast(r.error.message);PEND.cool=60;toast('Email sent again')}
+function stopWait(){clearInterval(WT);PEND=null}
+function cancelWait(){stopWait();authModal('signup')}
+function onConfirmed(){stopWait();modal(`<div class="wt"><div class="ok2">${ico('check',48)}</div><h3>Email confirmed</h3><p class="mut">Welcome to UGCHub. Let's set up your profile so people can find you.</p><button class="bt" style="width:100%" onclick="closeM();HIST=[];T='me';nav('edit')">Set up my profile</button></div>`);
+ setTimeout(()=>{if($('#m').classList.contains('on')&&$('.ok2')){closeM();HIST=[];T='me';nav('edit')}},2600)}
+const GOOGLE_ON=false;
+async function oauth(){if(!sb)return toast('Connection unavailable right now');LS.s('ugc_at',$('#an')?AT:'');
+ const r=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+location.pathname}});if(r.error)toast(r.error.message)}
+/* ---------- admin ---------- */
+async function loadAdmin(){try{const r=await sb.rpc('admin_stats');if(r.error)throw r.error;AS=r.data}catch(e){AS={error:1}}ASL=false;if(T==='admin')render()}
+function adminH(){if(!ADMIN)return '<div class="empty"><b>Not allowed</b></div>';
+ if(!AS&&!ASL){ASL=true;loadAdmin()}if(!AS)return '<p class="mut pad">Loading dashboard...</p>';
+ if(AS.error)return '<div class="empty"><b>Could not load stats</b><button class="bt" onclick="AS=null;render()">Retry</button></div>';
+ const c=(n,l)=>`<div class="sc"><b>${n}</b><span class="mut">${l}</span></div>`,mx=Math.max(1,...AS.daily.map(x=>x.n));
+ return `<div class="wrap"><div class="row2"><h2 class="pt">Dashboard</h2><button class="bt g s" onclick="AS=null;render()">Refresh</button></div>
+ <div class="sg">${c(AS.users,'Total users')}${c(AS.new7,'New, last 7 days')}${c(AS.new30,'New, last 30 days')}${c(AS.active7,'Active, last 7 days')}${c(AS.creators,'Creators')}${c(AS.brands,'Brands')}${c(AS.unconfirmed,'Email not verified')}${c(AS.posts,'Posts')}${c(AS.offers,'Offers')}${c(AS.applications,'Applications')}${c(AS.connections,'Connections')}${c(AS.messages,'Messages')}${c(AS.reviews,'Reviews')}</div>
+ <h2 class="pt" style="padding-top:18px">Sign-ups, last 30 days</h2><div class="chart">${AS.daily.map(x=>`<i title="${x.d}: ${x.n}" style="height:${Math.max(2,x.n/mx*100)}%"></i>`).join('')}</div><div class="row2" style="padding:4px 14px"><small class="mut">${AS.daily[0].d}</small><small class="mut">${AS.daily[AS.daily.length-1].d}</small></div>
+ <h2 class="pt" style="padding-top:18px">Latest sign-ups</h2>${AS.recent.map(u=>`<div class="rw"><div><b>${esc(u.name||'-')}</b> <span class="st2">${esc(u.type||'-')}</span><br><span class="mut">${esc(u.email)}${u.phone?' · '+esc(u.phone):''} · ${ago(u.created)} ago</span></div><span class="${u.confirmed?'ok':'mut'}">${u.confirmed?'verified':'unverified'}</span></div>`).join('')||'<p class="mut pad">No real users yet.</p>'}
+ <p class="mut pad">${AS.demo_users} demo accounts are excluded from these numbers.</p>${AS.demo_users?`<div style="padding:0 14px 20px"><button class="bt g dn" onclick="removeDemo()">Remove ${AS.demo_users} demo accounts and their content</button></div>`:''}</div>`}
+async function removeDemo(){if(!confirm('Delete all demo accounts, posts, offers and likes? This cannot be undone.'))return;const r=await sb.rpc('admin_remove_demo');if(r.error)return toast('Could not remove');await load();AS=null;draw();toast('Demo data removed')}
+/* ---------- install + pwa ---------- */
+let DP=null;const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();DP=e});window.addEventListener('appinstalled',()=>{$('#ins').style.display='none'});
+if(!standalone&&!LS.g('insx'))$('#ins').style.display='flex';
+$('#insx').onclick=()=>{$('#ins').style.display='none';LS.s('insx','1')};
+$('#insb').onclick=async()=>{if(DP){DP.prompt();try{await DP.userChoice}catch(e){}DP=null;$('#ins').style.display='none'}
+ else modal(`<div dir="rtl" style="display:flex;flex-direction:column;gap:10px"><b>تثبيت الموقع على الموبايل</b><p>iPhone: اضغط زر المشاركة (Share) ثم اختر (Add to Home Screen).</p><p>Android: اضغط قائمة المتصفح (⋮) ثم اختر (Install app).</p><button class="bt" onclick="closeM()">تمام</button></div>`)};
+(function(){try{const mk=z=>{const c=document.createElement('canvas');c.width=c.height=z;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,z,z);g.addColorStop(0,'#7c3aed');g.addColorStop(.6,'#ec4899');g.addColorStop(1,'#f59e0b');x.fillStyle=g;x.fillRect(0,0,z,z);x.fillStyle='#fff';x.font='bold '+z*.55+'px system-ui,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('U',z/2,z/2+z*.03);return c.toDataURL('image/png')};
+ const a=mk(192),b=mk(512);$('#ic').href=a;$('#ai').href=a;const base=location.href.split('#')[0];
+ const man={name:'UGCHub',short_name:'UGCHub',description:'Discover and hire UGC creators',start_url:base,scope:base.replace(/[^/]*$/,''),display:'standalone',background_color:'#000000',theme_color:'#000000',icons:[{src:a,sizes:'192x192',type:'image/png',purpose:'any'},{src:b,sizes:'512x512',type:'image/png',purpose:'any'}]};
+ $('#mf').href=URL.createObjectURL(new Blob([JSON.stringify(man)],{type:'application/manifest+json'}))}catch(e){}})();
+
+(async()=>{const h=location.hash.slice(1);draw();await load();draw();if(h.startsWith('u='))openProfile(h.slice(2));
+ if(sb){const s=await sb.auth.getSession();if(s.data&&s.data.session)await setUser(s.data.session.user);
+  sb.auth.onAuthStateChange((e,s)=>{setTimeout(()=>{const nu=s?s.user:null;if((nu&&nu.id)!==(U&&U.id))setUser(nu)},0)});
+  setInterval(()=>{if(U&&!document.hidden)refreshCN()},25000)}})();
+</script></body></html>
